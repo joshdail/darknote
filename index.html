@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Darknote</title>
+  <link rel="stylesheet" href="css/photon.css">
+  </script>
+</head>
+
+<body>
+  <!-- Wrap your entire app inside .window -->
+  <div class="window">
+    <!-- .toolbar-header sits at the top of your app -->
+    <header class="toolbar toolbar-header">
+      <span>Font Size: </span>
+      <input type="number" id="font-input" value="13" size="3" min="6" max="999" onchange=setFontSize() onblur=refocus() onfocus=focusFontSize()></input>
+
+      <button class="btn btn-default" id="left-align" onclick=leftAlign()>
+        <span class="icon icon-left-bold"></span>Align Left</button>
+
+      <button class="btn btn-default" id="center-align" onclick=centerAlign()>Center</button>
+
+      <button class="btn btn-default" id="right-align" onclick=rightAlign()>
+        <span class="icon icon-right-bold"></span>Align Right</button>
+
+      <button id='mode' class="btn btn-default pull-right" onclick="switchMode()">
+        Switch to Light Mode
+      </button>
+
+      <button class="btn btn-default pull-right" onclick="clearScreen()">
+        <span class="icon icon-trash"></span>Clear
+      </button>
+    </header>
+
+    <!-- Your app's content goes inside .window-content -->
+    <div class="window-content">
+      <div id="textarea-main" contenteditable="true" onkeydown=detectKeyTextArea(event)></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    const {
+      ipcRenderer
+    } = require('electron');
+    const textarea = document.getElementById('textarea-main');
+    const fontInput = document.getElementById('font-input');
+    const modeButton = document.getElementById('mode');
+    let savedFontValue = 13;
+    let lightMode = false;
+
+    function refocus() {
+      textarea.focus();
+    }
+    // Ensure that focus begins within text input
+    refocus();
+
+    function switchMode() {
+      if (lightMode) {
+        textarea.style.backgroundColor = 'black';
+        textarea.style.color = '#eee';
+        modeButton.innerHTML = 'Switch to Light Mode';
+      } else {
+        textarea.style.backgroundColor = '#eee';
+        textarea.style.color = 'black';
+        modeButton.innerHTML = 'Switch to Dark Mode';
+      }
+      lightMode = !lightMode;
+      refocus();
+    }
+
+    function makeBold() {
+      textarea.style.fontWeight = (textarea.style.fontWeight === 'bold') ? 'normal' : 'bold';
+      refocus();
+    }
+
+    function clearScreen() {
+      textarea.innerHTML = '';
+      refocus();
+    }
+
+    function setFontSize() {
+      if (isNaN(fontInput.value)) {
+        fontInput.value = savedFontValue;
+      } else {
+        textarea.style.fontSize = `${fontInput.value}px`;
+      }
+    }
+
+    function focusFontSize() {
+      savedFontValue = fontInput.value;
+    }
+
+    // Key detectors
+    function detectKeyTextArea(event) {
+      if (event.code === 'Escape') {
+        clearScreen();
+      }
+    }
+    // Alignment
+    function leftAlign() {
+      textarea.style.textAlign = 'left';
+      refocus();
+    }
+
+    function centerAlign() {
+      textarea.style.textAlign = 'center';
+      refocus();
+    }
+
+    function rightAlign() {
+      textarea.style.textAlign = 'right';
+      refocus();
+    }
+
+    ipcRenderer.on('save-clicked', function() {
+      ipcRenderer.send('save', textarea.innerHTML);
+    });
+
+    ipcRenderer.on('save-as-clicked', function() {
+      ipcRenderer.send('save-as', textarea.innerHTML);
+    });
+
+    ipcRenderer.on('file-opened', function(event, data) {
+      textarea.innerHTML = data;
+      refocus();
+    });
+  </script>
+</body>
+
+</html>
