@@ -1,4 +1,4 @@
-# SimpleNote
+# Darknote
 
 This is a simple editor for .txt files built with Electron and Node JS.
 

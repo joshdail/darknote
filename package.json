@@ -1,7 +1,7 @@
 {
   "name": "darknote",
   "version": "1.0.0",
-  "description": "",
+  "description": "Darknote - a simple editor for .txt",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
-  "author": "",
+  "author": "JoshDail",
   "license": "ISC",
   "dependencies": {
     "electron": "^11.2.3",
@@ -26,8 +26,7 @@
   "config": {
     "forge": {
       "packagerConfig": {},
-      "makers": [
-        {
+      "makers": [{
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "name": "darknote"
