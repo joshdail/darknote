@@ -8,8 +8,8 @@ The text editor window features a dark mode and light mode. In the current versi
 
 There are a few simple keyboard shortcuts.
 
-Ctrl + S          Save a file
-Shift + Ctrl + S  Save as
-Ctrl + O          Open a file
-Ctrl + Q          Quit the program
-Escape            Clear the screen
+- Ctrl + S          Save a file
+- Shift + Ctrl + S  Save as
+- Ctrl + O          Open a file
+- Ctrl + Q          Quit the program
+- Escape            Clear the screen
